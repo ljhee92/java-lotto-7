@@ -1,9 +1,15 @@
 package lotto.controller;
 
+import camp.nextstep.edu.missionutils.Randoms;
+import lotto.Lotto;
+import lotto.domain.LottoInfo;
 import lotto.domain.Money;
 import lotto.util.RetryHandler;
 import lotto.view.InputView;
 import lotto.view.OutputView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LottoController {
     private final InputView inputView;
@@ -16,6 +22,14 @@ public class LottoController {
 
     public void run() {
         Money purchaseAmount = RetryHandler.repeat(this::getPurchaseAmount);
+        int ticketCount = purchaseAmount.getTicketCount();
+
+        List<LottoInfo> lottos = new ArrayList<>();
+        for (int i = 0; i < ticketCount; i++) {
+            Lotto lotto = Lotto.of(Randoms.pickUniqueNumbersInRange(1, 45, 6));
+            lottos.add(LottoInfo.from(lotto));
+        }
+        outputView.displayPurchaseResult(lottos, ticketCount);
     }
 
     private Money getPurchaseAmount() {

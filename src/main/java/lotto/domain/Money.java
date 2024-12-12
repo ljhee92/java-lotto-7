@@ -5,6 +5,7 @@ import lotto.util.ErrorMessage;
 import java.math.BigDecimal;
 
 public class Money {
+    private static final BigDecimal TICKET_UNIT = BigDecimal.valueOf(1000);
     private final BigDecimal amount;
 
     private Money(BigDecimal amount) {
@@ -17,9 +18,13 @@ public class Money {
     }
 
     private static void validate(BigDecimal amount) {
-        if (!amount.remainder(BigDecimal.valueOf(1000)).equals(BigDecimal.ZERO)) {
+        if (!amount.remainder(TICKET_UNIT).equals(BigDecimal.ZERO)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_EXCEPTION.getMessage());
         }
+    }
+
+    public int getTicketCount() {
+        return this.amount.divide(TICKET_UNIT).intValue();
     }
 
     @Override
