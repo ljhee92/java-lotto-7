@@ -11,6 +11,8 @@ import lotto.util.RetryHandler;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -51,6 +53,16 @@ public class LottoController {
             result.put(statistics, result.get(statistics) + 1);
         }
         outputView.displayStatistics(StatisticsInfo.of(result));
+
+        BigDecimal rateOfReturn = BigDecimal.ZERO;
+        for (Statistics statistics : Statistics.values()) {
+            rateOfReturn = rateOfReturn.add(
+                    statistics.getWinnings().multiply(BigDecimal.valueOf(result.get(statistics)))
+            );
+        }
+        double profit = rateOfReturn.divide(purchaseAmount.getAmount(), 3, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100)).doubleValue();
+        outputView.displayProfit(profit);
     }
 
     private Money getPurchaseAmount() {

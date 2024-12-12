@@ -27,6 +27,11 @@ public class Money {
         return this.amount.divide(TICKET_UNIT).intValue();
     }
 
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
     @Override
     public String toString() {
         return "Money{" +

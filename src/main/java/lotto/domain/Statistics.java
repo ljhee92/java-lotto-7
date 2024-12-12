@@ -28,4 +28,8 @@ public enum Statistics {
                         statistics.isMatchWithBonusNumber == isMatchWithBonusNumber)
                 .findAny().orElse(MISS);
     }
+
+    public BigDecimal getWinnings() {
+        return winnings;
+    }
 }
