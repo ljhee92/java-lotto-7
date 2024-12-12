@@ -22,7 +22,7 @@
 - [ ] 당첨 번호는 쉼표(,)를 기준으로 구분
 
 3. 잘못된 값 입력 시
-- [ ] ``IllegalArgumentException`` 발생 후 그 부분부터 재입력 받기
+- [x] ``IllegalArgumentException`` 발생 후 그 부분부터 재입력 받기
 
 ### 출력
 1. 예외 상황 시 오류 메시지 출력

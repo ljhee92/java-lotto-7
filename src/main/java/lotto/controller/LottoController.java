@@ -1,6 +1,7 @@
 package lotto.controller;
 
 import lotto.domain.Money;
+import lotto.util.RetryHandler;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -14,6 +15,10 @@ public class LottoController {
     }
 
     public void run() {
-        Money purchaseAmount = Money.of(inputView.requestPurchaseAmount());
+        Money purchaseAmount = RetryHandler.repeat(this::getPurchaseAmount);
+    }
+
+    private Money getPurchaseAmount() {
+        return Money.of(inputView.requestPurchaseAmount());
     }
 }
