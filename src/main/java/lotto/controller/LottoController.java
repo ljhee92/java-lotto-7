@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.Randoms;
 import lotto.Lotto;
 import lotto.domain.LottoInfo;
 import lotto.domain.Money;
+import lotto.domain.WinningLotto;
 import lotto.util.RetryHandler;
 import lotto.view.InputView;
 import lotto.view.OutputView;
@@ -31,14 +32,19 @@ public class LottoController {
         }
         outputView.displayPurchaseResult(lottos, ticketCount);
 
-        Lotto winningLotto = RetryHandler.repeat(this::getWinningLotto);
+        Lotto inputWinningLotto = RetryHandler.repeat(this::getInputWinningLotto);
+        WinningLotto winningLotto = RetryHandler.repeat(() -> getWinningLotto(inputWinningLotto));
     }
 
     private Money getPurchaseAmount() {
         return Money.of(inputView.requestPurchaseAmount());
     }
 
-    private Lotto getWinningLotto() {
+    private WinningLotto getWinningLotto(Lotto inputWinningLotto) {
+        return WinningLotto.of(inputWinningLotto, inputView.requestBonusNumber());
+    }
+
+    private Lotto getInputWinningLotto() {
         return Lotto.of(inputView.requestWinningLotto());
     }
 }
