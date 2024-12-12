@@ -17,19 +17,16 @@ import java.util.List;
 import java.util.Map;
 
 public class LottoService {
-    private List<Lotto> lottos;
-    private Map<Statistics, Integer> result;
-
-    public void issueLottos(int ticketCount) {
+    public List<Lotto> issueLottos(int ticketCount) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < ticketCount; i++) {
             Lotto lotto = Lotto.of(Randoms.pickUniqueNumbersInRange(1, 45, 6));
             lottos.add(lotto);
         }
-        this.lottos = lottos;
+        return lottos;
     }
 
-    public List<LottoInfo> getLottoInfos() {
+    public List<LottoInfo> getLottoInfos(List<Lotto> lottos) {
         List<LottoInfo> lottoInfos = new ArrayList<>();
         for (Lotto lotto : lottos) {
             lottoInfos.add(LottoInfo.from(lotto));
@@ -37,7 +34,7 @@ public class LottoService {
         return lottoInfos;
     }
 
-    public void draw(WinningLotto winningLotto) {
+    public Map<Statistics, Integer> draw(List<Lotto> lottos, WinningLotto winningLotto) {
         Map<Statistics, Integer> result = new EnumMap<>(Statistics.class);
         Arrays.stream(Statistics.values()).forEach(statistics -> {
             result.put(statistics, 0);
@@ -46,14 +43,14 @@ public class LottoService {
             Statistics statistics = winningLotto.checkWinnings(lotto);
             result.put(statistics, result.get(statistics) + 1);
         }
-        this.result = result;
+        return result;
     }
 
-    public StatisticsInfo getStatisticsInfo() {
+    public StatisticsInfo getStatisticsInfo(Map<Statistics, Integer> result) {
         return StatisticsInfo.of(result);
     }
 
-    public double getProfit(Money purchaseAmount) {
+    public double getProfit(Money purchaseAmount, Map<Statistics, Integer> result) {
         BigDecimal rateOfReturn = BigDecimal.ZERO;
         for (Statistics statistics : Statistics.values()) {
             rateOfReturn = rateOfReturn.add(
