@@ -7,8 +7,12 @@ import lotto.util.OutputWriter;
 import java.util.List;
 
 public class OutputView implements OutputWriter {
+    private static final String PURCHASE_RESULT_FORMAT = "%n%d개를 구매했습니다.";
+    private static final String STATISTICS_HEAD = "당첨 통계%n---";
+    private static final String PROFIT_FORMAT = "총 수익률은 %,.1f%%입니다.";
+
     public void displayPurchaseResult(List<LottoInfo> lottos, int ticketCount) {
-        displayFormat("%n%d개를 구매했습니다.", ticketCount);
+        displayFormat(PURCHASE_RESULT_FORMAT, ticketCount);
         lottos.forEach(lottoInfo -> {
             displayMessageByLine(lottoInfo.numbers().toString());
         });
@@ -16,8 +20,7 @@ public class OutputView implements OutputWriter {
 
     public void displayStatistics(StatisticsInfo statisticsInfo) {
         displayNewLine();
-        displayMessageByLine("당첨 통계");
-        displayMessageByLine("---");
+        displayFormat(STATISTICS_HEAD);
         displayFormat("3개 일치 (5,000원) - %d개", statisticsInfo.fifth());
         displayFormat("4개 일치 (50,000원) - %d개", statisticsInfo.forth());
         displayFormat("5개 일치 (1,500,000원) - %d개", statisticsInfo.third());
@@ -26,6 +29,6 @@ public class OutputView implements OutputWriter {
     }
 
     public void displayProfit(double profit) {
-        displayFormat("총 수익률은 %,.1f%%입니다.", profit);
+        displayFormat(PROFIT_FORMAT, profit);
     }
 }
