@@ -30,9 +30,15 @@ public class LottoController {
             lottos.add(LottoInfo.from(lotto));
         }
         outputView.displayPurchaseResult(lottos, ticketCount);
+
+        Lotto winningLotto = RetryHandler.repeat(this::getWinningLotto);
     }
 
     private Money getPurchaseAmount() {
         return Money.of(inputView.requestPurchaseAmount());
+    }
+
+    private Lotto getWinningLotto() {
+        return Lotto.of(inputView.requestWinningLotto());
     }
 }
