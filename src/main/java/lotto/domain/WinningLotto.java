@@ -3,6 +3,11 @@ package lotto.domain;
 import lotto.Lotto;
 import lotto.util.ErrorMessage;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 public class WinningLotto {
     private final Lotto winningLotto;
     private final int bonusNumber;
@@ -21,6 +26,15 @@ public class WinningLotto {
         if (winningLotto.isContain(bonusNumber)) {
             throw new IllegalArgumentException(ErrorMessage.DUPLICATE_WINNING_AND_BONUS_NUMBER.getMessage());
         }
+    }
+
+    public Statistics checkWinnings(Lotto purchasedLotto) {
+        List<Integer> duplicate = purchasedLotto.getNumbers().stream()
+                .filter(number -> winningLotto.getNumbers().stream()
+                        .anyMatch(Predicate.isEqual(number)))
+                .toList();
+
+        return Statistics.of(duplicate.size(), purchasedLotto.isContain(bonusNumber));
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class InputView implements InputReader, OutputWriter {
     private static final Pattern NUMBER_PATTERN = Pattern.compile("^[0-9]+$");
-    private static final Pattern WINNING_LOTTO = Pattern.compile("^([1-9]+)(,([1-9]+))+$");
+    private static final Pattern WINNING_LOTTO = Pattern.compile("^(\\d{1,2})+(,\\d{1,2})+$");
 
     public BigDecimal requestPurchaseAmount() {
         displayMessageByLine("구입금액을 입력해 주세요.");
